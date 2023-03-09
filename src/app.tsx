@@ -49,12 +49,12 @@ function App() {
       old: item.file,
       new: renamedText(item.file)
     }))
-    console.log(filesToRename)
+    
     //@ts-ignore
     const result = await electronAPI.renameFiles({ filesToRename });
-    // if (result.files) {
-    //   setFiles(files.map((item: any) => ({ checked: true, file: item })));
-    // }
+    if (result.files) {
+      setFiles(result.files.map((item: any) => ({ checked: true, file: item })));
+    }
   }
 
   function onItemCheckChange(index: number) {
