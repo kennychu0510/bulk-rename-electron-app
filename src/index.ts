@@ -53,7 +53,20 @@ app.whenReady().then(() => {
     }
     if (selectedDir) {
       const files = fs.readdirSync(selectedDir);
-      return { selectedDir, files };
+      const fileSummary = new Map<string, number>()
+
+      for (let file of files) {
+        const ext = path.extname(file)
+        if (ext) {
+          fileSummary.set(ext,(fileSummary.get(ext) || 0) + 1)
+        }
+        else if (fs.lstatSync(path.join(selectedDir,file)).isDirectory()) {
+          fileSummary.set('folder',(fileSummary.get('folder') || 0) + 1)
+        } else {
+          fileSummary.set(file,(fileSummary.get(file) || 0) + 1)
+        }
+      }
+      return { selectedDir, files, fileSummary };
     }
   });
 
